@@ -33,5 +33,19 @@ read_csv_function = function(file_name){
 }
 
 df = mutate(df, observe = map(.x = df[[1,]], ~ read_csv_function(.x)))
-
 ```
+
+Now tidy the result.
+
+```{r problem1_tidy}
+df = df%>%
+  separate(value, into = c("arm", "number"), sep = "_") %>%
+  mutate(number = substr(number, 1, 2)) %>%
+  unnest %>%
+  gather(key = week, value = data, week_1:week_8) %>%
+  mutate(week = substr(week, 6, 6)) %>%
+  select(arm, number, week, data)
+
+df
+```
+
