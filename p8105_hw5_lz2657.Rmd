@@ -5,7 +5,7 @@ date: Nov 5, 2018
 output: github_document
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(ggplot2)
@@ -21,4 +21,17 @@ First, set up a dataframe containing all file names.
   df = as.tibble(list.files(path = "./data/"))
 
   df
+```
+
+Next, make a reading function, read in data for each subject and save the result as the "observe" variable.
+
+```{r problem1_read_data}
+read_csv_function = function(file_name){
+  subject =
+    read_csv(file = str_c("./data/", file_name)) %>%
+    mutate(file = file_name)
+}
+
+df = mutate(df, observe = map(.x = df[[1,]], ~ read_csv_function(.x)))
+
 ```
