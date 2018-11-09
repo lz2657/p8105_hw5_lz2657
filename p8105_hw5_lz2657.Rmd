@@ -18,7 +18,8 @@ library(broom)
 First, set up a dataframe containing all file names.
 
 ```{r problem1_read_file_names}
-  df = as.tibble(list.files(path = "./data/"))
+  df = list.files(path = "./data/") %>%
+    as.tibble()
 
   df
 ```
@@ -67,3 +68,18 @@ ggplot(df, aes(x = week, y = data, color = number, group = number)) +
 ```
 
 The observations of the subjects in the control arm almost keep constant and even a little bit decreasing, while those of the experimental arm have an obvious trend of increasing.
+
+## Problem 2
+
+```{r problem2_read_tidy}
+homicide_url = "https://raw.githubusercontent.com/washingtonpost/data-homicides/master/homicide-data.csv"
+
+homicide_data = 
+  read.csv(url(homicide_url)) %>% 
+  janitor::clean_names() %>% 
+  as_tibble()
+
+homicide_data
+```
+
+The raw dataset has `r nrow(homicide_data)` rows and `r ncol(homicide_data)` columns.
