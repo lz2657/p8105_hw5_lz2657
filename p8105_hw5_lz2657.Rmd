@@ -108,3 +108,15 @@ homicide_data = homicide_data %>%
 homicide_data
 ```
 
+For the city of Baltimore, MD, we can estimate the proportion and the CI of homicides that are unsolved.
+
+```{r problem2_baltimore_prop}
+homicide_bal_md = filter(homicide_data, city_state == "Baltimore, MD")
+
+homicide_bal_md_prop = tidy(prop.test(homicide_bal_md$unsolved, homicide_bal_md$total)) %>%
+  select(estimate, conf.low, conf.high)
+
+homicide_bal_md_prop
+```
+
+The estimate the proportion and the upper and lower bound of the 95% CI are shown above.
