@@ -136,3 +136,22 @@ homicide_data = homicide_data %>%
 
 homicide_data
 ```
+
+Then I create a plot that shows the estimates and CIs for each city.
+
+```{r problem2_plot}
+homicide_data %>%
+  mutate(city_state = forcats::fct_reorder(city_state, estimate, desc = FALSE)) %>%
+  ggplot(aes(x = city_state, y = estimate, color = city_state)) + 
+    geom_point() + 
+    geom_errorbar(aes(ymin = conf.low, ymax = conf.high, width = 0.3)) +
+    theme(axis.text.x = element_text(angle = 60, hjust = 1)) + 
+    theme(legend.position = "none") +
+    labs(
+        title = "proportion of unsolved homicides",
+        x = "city, state",
+        y = "proportion"
+      )
+```
+
+The city with the largest proportion of unsolved homicides is Chicago and that with the lowest is Richmond.
