@@ -120,3 +120,19 @@ homicide_bal_md_prop
 ```
 
 The estimate the proportion and the upper and lower bound of the 95% CI are shown above.
+
+Also, we can estimate the proportion and the CI of homicides that are unsolved for all the cities in the dataset.
+
+```{r problem2_all_prop}
+homicide_prop = function(df_1, df_2){
+  df = prop.test(df_1, df_2)
+  tidy(df)  %>%
+    select(estimate, conf.low, conf.high)
+}
+
+homicide_data = homicide_data %>%
+  mutate(prop_test = map2(.x = unsolved, .y = total, ~homicide_prop(.x, .y))) %>%
+  unnest()
+
+homicide_data
+```
