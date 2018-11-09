@@ -82,4 +82,4 @@ homicide_data =
 homicide_data
 ```
 
-The raw dataset has `r nrow(homicide_data)` rows and `r ncol(homicide_data)` columns.
+The raw dataset has `r nrow(homicide_data)` rows of `r ncol(homicide_data)` variables, including uid, reported date, last and first name, race, sex and age of the victims, city, state, latitude, longitude and disposition. All of the dates fall in 2017. There are four wrong data in the raw dataset with the row number of 560, 49180, 51023 and 51024. 
