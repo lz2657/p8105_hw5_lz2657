@@ -65,3 +65,5 @@ ggplot(df, aes(x = week, y = data, color = number, group = number)) +
       discrete = TRUE
     )
 ```
+
+The observations of the subjects in the control arm almost keep constant and even a little bit decreasing, while those of the experimental arm have an obvious trend of increasing.
