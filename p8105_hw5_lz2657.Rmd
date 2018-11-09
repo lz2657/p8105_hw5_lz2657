@@ -75,11 +75,36 @@ The observations of the subjects in the control arm almost keep constant and eve
 homicide_url = "https://raw.githubusercontent.com/washingtonpost/data-homicides/master/homicide-data.csv"
 
 homicide_data = 
-  read.csv(url(homicide_url)) %>% 
+  read.csv(url(homicide_url), stringsAsFactors = FALSE) %>% 
   janitor::clean_names() %>% 
   as_tibble()
 
 homicide_data
 ```
 
-The raw dataset has `r nrow(homicide_data)` rows of `r ncol(homicide_data)` variables, including uid, reported date, last and first name, race, sex and age of the victims, city, state, latitude, longitude and disposition. All of the dates fall in 2017. There are four wrong data in the raw dataset with the row number of 560, 49180, 51023 and 51024. 
+The raw dataset has `r nrow(homicide_data)` rows of `r ncol(homicide_data)` variables, including uid, reported date, last and first name, race, sex and age of the victims, city, state, latitude, longitude and disposition. All of the dates are from 2007 to 2017. There are four wrong data in the raw dataset. I change these data to what they should be.
+
+```{r problem2_change_data, include = FALSE}
+wrong_1 = (1:nrow(homicide_data))[homicide_data[,2] == 201511105]
+wrong_2 = (1:nrow(homicide_data))[homicide_data[,2] == 201511018]
+wrong_3 = (1:nrow(homicide_data))[homicide_data[,12] == ""]
+wrong_4 = (1:nrow(homicide_data))[homicide_data[,8] == "Tulsa" & homicide_data[,9] == "AL"]
+
+homicide_data[wrong_1,2] = 20151105
+homicide_data[wrong_2,2] = 20151018
+homicide_data[wrong_3,] = c("Pit-000050", 20100702, "SPRINGS", "TY-JAH", "Black", 0, "Female", "Pittsburgh", "PA", 40.461945, -79.89477, "Closed by arrest")
+homicide_data[wrong_4,9] = "OK"
+```
+
+Now create a city_state variable and then summarize within cities to obtain the total number of homicides and the number of unsolved homicides.
+
+```{r problem2_manipulate}
+homicide_data = homicide_data %>%
+  mutate(city_state = str_c(city, ", ", state)) %>%
+  group_by(city_state) %>%
+  summarize(total = n(), 
+            unsolved = sum(disposition == "Closed without arrest" | disposition == "Open/No arrest"))
+
+homicide_data
+```
+
