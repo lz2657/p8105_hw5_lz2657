@@ -49,3 +49,19 @@ df = df%>%
 df
 ```
 
+Then we can make a spaghetti plot showing observations on each subject over time.
+
+```{r problem1_plot}
+ggplot(df, aes(x = week, y = data, color = number, group = number)) + 
+  geom_line() + 
+  facet_grid( ~ arm) + 
+    labs(
+      title = "subject observations over time",
+      x = "week",
+      y = "observation"
+    ) +
+    viridis::scale_color_viridis(
+      name = "ID", 
+      discrete = TRUE
+    )
+```
